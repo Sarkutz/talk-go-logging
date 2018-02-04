@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="27cm" height="4cm" viewBox="119 254 539 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="120" y="255" width="91.1" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="120" y="255" width="91.1" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="165.55" y="276.9">
+      <tspan x="165.55" y="276.9"></tspan>
+      <tspan x="165.55" y="292.9">User Agent</tspan>
+      <tspan x="165.55" y="308.9"></tspan>
+    </text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="165.55" y1="279.9" x2="165.55" y2="279.9"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="130" y1="295.9" x2="201.1" y2="295.9"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="165.55" y1="311.9" x2="165.55" y2="311.9"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="364.026" y="255" width="58.05" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="364.026" y="255" width="58.05" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="393.051" y="276.9">
+      <tspan x="393.051" y="276.9"></tspan>
+      <tspan x="393.051" y="292.9">GoPro</tspan>
+      <tspan x="393.051" y="308.9"></tspan>
+    </text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="393.051" y1="279.9" x2="393.051" y2="279.9"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="374.026" y1="295.9" x2="412.076" y2="295.9"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="393.051" y1="311.9" x2="393.051" y2="311.9"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="552" y="255" width="104.8" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="552" y="255" width="104.8" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="604.4" y="276.9">
+      <tspan x="604.4" y="276.9"></tspan>
+      <tspan x="604.4" y="292.9">Origin Server</tspan>
+      <tspan x="604.4" y="308.9"></tspan>
+    </text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="604.4" y1="279.9" x2="604.4" y2="279.9"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="562" y1="295.9" x2="646.8" y2="295.9"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="604.4" y1="311.9" x2="604.4" y2="311.9"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="347.026" y1="276" x2="211.1" y2="276"/>
+    <polygon style="fill: #000000" points="347.026,281 363.026,276 347.026,271 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="347.026,281 363.026,276 347.026,271 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="288.5" y="272">1: Request</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="535" y1="277" x2="422.076" y2="277"/>
+    <polygon style="fill: #000000" points="535,282 551,277 535,272 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="535,282 551,277 535,272 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="481" y="271">2: Proxy request</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="439.076" y1="304.25" x2="552" y2="304.25"/>
+    <polygon style="fill: #000000" points="439.076,299.25 423.076,304.25 439.076,309.25 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="439.076,299.25 423.076,304.25 439.076,309.25 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="490" y="318.25">3: Response</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="228.1" y1="304.25" x2="364.026" y2="304.25"/>
+    <polygon style="fill: #000000" points="228.1,299.25 212.1,304.25 228.1,309.25 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="228.1,299.25 212.1,304.25 228.1,309.25 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="299.5" y="318.25">4: Proxy response</text>
+  </g>
+</svg>
