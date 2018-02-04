@@ -1,0 +1,279 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+
+\usecolortheme[named=Plum]{structure}
+
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{navigation symbols}{}
+
+\usetheme{Boadilla}
+
+\usepackage{graphics}
+\usepackage{hyperref}
+\usepackage{fancybox}
+
+\usepackage[absolute,overlay]{textpos}
+\newenvironment{myfootnote}[2]
+{\begin{textblock*}{\textwidth}(#1,#2)\footnotesize\textcolor{Black}\bgroup}
+{\egroup\end{textblock*}}
+
+\AtBeginSection[]
+{
+ \begin{frame}
+ \frametitle{Overview}
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+
+
+\title{Logging in Go}
+\subtitle{An Introduction to Structured Logging}
+\author{Ashim Ghosh}
+\date[]{February 2, 2018}
+
+\begin{document}
+
+%% FRAME: Title page
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+%% FRAME: TOC
+
+\begin{frame}{Overview}
+  \tableofcontents{}
+\end{frame}
+
+%% FRAME: Scenario
+
+\begin{frame}{Scenario: Go Proxy (GoPro)}
+  \begin{center}
+  \includegraphics[width=.9\textwidth]{scenario}
+  \end{center}
+  \medskip
+
+  \begin{itemize}
+    \item Accept requests from \structure{\emph{user agent}}
+    \item Proxy request to the \structure{\emph{origin server}}
+    \item Proxy response from the origin server to the user agent
+  \end{itemize}
+  \pause
+  \bigskip
+
+  Why this scenario?
+  \begin{itemize}
+    \item A good model for the Ad Server
+    \item Easy --- won't get in the way
+  \end{itemize}
+\end{frame}
+
+
+%% SECTION: Print Statements
+
+\section{Print Statements}
+
+%% FRAME: Prints
+
+\begin{frame}{Prints}
+  \begin{itemize}
+    \item \structure{Approach}: Add plain print statements
+   \item \structure{Documentation}: [Online.]
+     \href{https://golang.org/pkg/fmt/}{golang.org/pkg/fmt/}
+   \item \structure{Repository}: Built into Go
+   \item \structure{Demo}: Branch
+     \structure{\href{https://github.com/Sarkutz/talk-go-logging/tree/print}{print}}
+  \end{itemize}
+  \pause
+  \bigskip
+
+  \begin{itemize}
+    \item \structure{Merits}:
+      \ovalbox{Simplicity}
+    \item \structure{Demerits}: 
+      \ovalbox{Level of abstraction}
+      \ovalbox{Easy of parsing}
+      \ovalbox{Log design}
+      \ovalbox{Avoid missing log details}
+      \ovalbox{Production readiness}
+  \end{itemize}
+\end{frame}
+
+
+%% SECTION: Default Logger
+
+\section{Default Logger}
+
+%% FRAME: Default Logger
+
+\begin{frame}{Default Logger}
+  \begin{itemize}
+    \item \structure{Approach}: Use log package; simple, sensible, basic
+    \item Fatal log-level considered bad?
+    \item \structure{Documentation}: [Online.]
+      \href{https://golang.org/pkg/log/}{golang.org/pkg/log/}
+    \item \structure{Repository}: Built into Go
+    \item \structure{Demo}: Branch
+      \structure{\href{https://github.com/Sarkutz/talk-go-logging/tree/pkg-log}{pkg-log}}
+  \end{itemize}
+  \pause
+  \bigskip
+
+  \begin{itemize}
+    \item \structure{Merits}:
+      \ovalbox{Simplicity}
+      \ovalbox{Production readiness}
+    \item \structure{Demerits}: 
+      \ovalbox{Level of abstraction} (effectively only two levels)
+      \ovalbox{Easy of parsing}
+      \ovalbox{Log design}
+    \item \ovalbox{Avoid missing log details} (support for adding some details
+      to each log)
+  \end{itemize}
+\end{frame}
+
+
+%% SECTION: Levelled Logging
+
+\section{Levelled Logging}
+
+%% FRAME: Levelled Logging
+
+\begin{frame}[fragile]{Levelled Logging}
+  \begin{itemize}
+    \item \structure{Purpose}: Ameliorate problem of level of abstraction
+    \item \structure{Approach}: Define levels of severity; add logs at appropriate level
+      (after due consideration)
+    \item \structure{Common Functions}: 
+      \begin{itemize}
+        \item \verb|{Debug, Info, Warn, Error, Fatal, Error} X {, f, ln}|
+        \item \verb|func SetLevel(int)|
+      \end{itemize}
+
+    \item glog package
+    \item \structure{Documentation}: [Online.]
+      \href{https://godoc.org/github.com/golang/glog}{godoc.org/github.com/golang/glog}
+    \item \structure{Repository}: [Online.]
+      \href{https://github.com/golang/glog}{github.com/golang/glog}
+  \end{itemize}
+
+  \bigskip
+
+  \begin{itemize}
+    \item \structure{Merits}:
+      \ovalbox{Level of abstraction}
+      \ovalbox{Production readiness}
+    \item \structure{Demerits}: 
+      \ovalbox{Easy of parsing}
+      \ovalbox{Log design}
+      \ovalbox{Avoid missing log details}
+      \ovalbox{Simplicity}
+  \end{itemize}
+\end{frame}
+
+
+%% SECTION: Structured Logging
+
+\section{Structured Logging}
+
+%% FRAME: Structured Logging
+
+\begin{frame}{Structured Logging}
+  \begin{center}
+    \textbf{structure} {\textit{\small(noun)}}: a complex entity constructed of many parts.
+  \end{center}
+  \begin{itemize}
+    \item Thinking of logs as a structure; designing this structure and it's
+      parts
+    \item An example
+  \end{itemize}
+\end{frame}
+
+%% FRAME: Default Logger: Overview
+
+\begin{frame}{Logrus package: Overview}
+  \begin{itemize}
+    \item \structure{Approach}: Design ``parts/fields'' of each log; use Logrus package
+    \item \structure{Documentation}: [Online.]
+      \href{https://godoc.org/github.com/sirupsen/logrus}{godoc.org/github.com/sirupsen/logrus}
+    \item \structure{Repository} (and tutorial): [Online.]
+      \href{https://github.com/sirupsen/logrus}{github.com/sirupsen/logrus}
+    \item \structure{Demo}: Branch
+      \structure{\href{https://github.com/Sarkutz/talk-go-logging/tree/logrus}{logrus}}
+  \end{itemize}
+\end{frame}
+
+%% FRAME: Code and Demo
+
+\begin{frame}{Code and Demo}
+  Questions that logs can answer-
+  \begin{itemize}[<+->]
+    \item Are there any errors?
+      \structure{\{simple\}}
+    \item What HTTP status codes are returned by the origin server?
+      \structure{\{doable\}}
+    \item Does origin server upgrade to HTTP/2 for HTTPS?
+      \structure{\{feature specific\}}
+    \item Can I replay what happened in a request?
+      \structure{\{deep analysis\}}
+    \item Can I manage stats and other Time Series Data?
+      \structure{\{deep analysis\}}
+    \item Can I find out the most frequent requests from user agent?
+      \structure{\{business queries\}}
+  \end{itemize}
+\end{frame}
+
+%% FRAME: Default Logger: Overview
+
+\begin{frame}{Logrus package: Merits and Demerits}
+  \begin{itemize}
+    \item \structure{Merits}:
+      \ovalbox{Level of abstraction}
+      \ovalbox{Easy of parsing}
+      \ovalbox{Good log design}
+      \ovalbox{Avoid missing log details}
+      \ovalbox{Production readiness}
+    \item \structure{Demerits}: 
+      \ovalbox{Simplicity}?
+      \ovalbox{Ugly}?
+  \end{itemize}
+\end{frame}
+
+
+%% SECTION: Ad Server
+
+\section{Ad Server}
+
+%% FRAME: Ad Server
+
+\begin{frame}{Ad Server}
+  \begin{center}
+    \textit{This slide is intentionally left blank}
+    \pause
+    \bigskip
+    \ldots \\ for you and me to fill
+  \end{center}
+\end{frame}
+
+
+%% FRAME: Closing
+
+\begin{frame}{Conclusion}
+  \begin{itemize}
+    \item Design logs as if they were composed of several fields.
+    \item The logrus package provides structured, levelled and pluggable
+      logging in Go.
+    \item This presentation and GoPro code is available online at
+      \structure{\href{https://github.com/sarkutz/talk-go-logging}{github.com/sarkutz/talk-go-logging}}
+  \end{itemize}
+\end{frame}
+
+%% FRAME: Thank You
+
+{
+  \setbeamertemplate{background canvas}{\includegraphics[width=\paperwidth,height=\paperheight]{thank_you.png}}
+
+  \begin{frame}[plain]
+  \end{frame}
+}
+
+\end{document}
