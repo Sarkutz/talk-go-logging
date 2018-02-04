@@ -18,6 +18,10 @@
  Usage
 *******
 
+Install dependencies::
+
+  go get github.com/sirupsen/logrus
+
 Start server::
 
   go build
@@ -26,14 +30,31 @@ Start server::
 Sample Request
 ==============
 
+HTTP
+""""
+
 Request::
 
   $ curl --silent --include --header 'X-purl: http://www.google.com/' 'http://localhost:8080/' --output /dev/null
 
 Proxy Logs::
 
-  $ go run gopro.go 
-  gopro:: 2018/02/02 00:16:51 gopro.go:27: req = &{Method:GET URL:/ Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[User-Agent:[curl/7.47.0] Accept:[*/*] X-Purl:[http://www.google.com/]] Body:0x928bb0 ContentLength:0 TransferEncoding:[] Close:false Host:localhost:8080 Form:map[] PostForm:map[] MultipartForm:<nil> Trailer:map[] RemoteAddr:127.0.0.1:43220 RequestURI:/ TLS:<nil> Cancel:<nil>}
-  gopro:: 2018/02/02 00:16:51 gopro.go:40: req = &{Method:GET URL:http://www.google.com/ Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[User-Agent:[curl/7.47.0] Accept:[*/*]] Body:0x928bb0 ContentLength:0 TransferEncoding:[] Close:false Host:www.google.com Form:map[] PostForm:map[] MultipartForm:<nil> Trailer:map[] RemoteAddr:127.0.0.1:43220 RequestURI: TLS:<nil> Cancel:<nil>}
-  gopro:: 2018/02/02 00:16:51 gopro.go:49: resp = &{Status:200 OK StatusCode:200 Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[Content-Type:[text/html; charset=ISO-8859-1] X-Frame-Options:[SAMEORIGIN] Expires:[-1] Cache-Control:[private, max-age=0] Server:[gws] X-Xss-Protection:[1; mode=block] Set-Cookie:[NID=122=W6iXylzubVcUoRJGJllzcXMGTfEpEEnhqRptmIGEVKkIYelA3P-UJslz4k_97nClPUgTvxdG26qeB568OkZpnPOUBqToqvYmJHlnI52GHMB2zg6hF1_Do4xpOT3FVRws; expires=Fri, 03-Aug-2018 18:46:51 GMT; path=/; domain=.google.co.in; HttpOnly] Date:[Thu, 01 Feb 2018 18:46:51 GMT] P3p:[CP="This is not a P3P policy! See g.co/p3phelp for more info."]] Body:0xc820012d40 ContentLength:-1 TransferEncoding:[] Close:false Trailer:map[] Request:0xc8200ca2a0 TLS:<nil>}
+  $ ./gopro
+  {"httpver":"HTTP/1.1","level":"debug","method":"GET","msg":"Received request from User Agent","peer":"ua","pkg":"main","reqid":1517716295,"scheme":"http","time":"2018-02-04T09:21:35+05:30","url":"http://www.google.com/"}
+  {"httpver":"HTTP/1.1","level":"debug","method":"GET","msg":"Sending request to Origin Server","peer":"origin","pkg":"main","reqid":1517716295,"scheme":"http","time":"2018-02-04T09:21:35+05:30","url":"http://www.google.com/"}
+  {"httpver":"HTTP/1.1","level":"debug","msg":"Received response from Origin Server","peer":"origin","pkg":"main","reqid":1517716295,"scheme":"http","statuscode":200,"time":"2018-02-04T09:21:35+05:30","url":"http://www.google.co.in/?gfe_rd=cr\u0026dcr=0\u0026ei=R4N2WufbHJLm8wfrtaDgBQ"}
+
+HTTPS
+"""""
+
+Request::
+
+  $ curl --silent --include --header 'X-purl: https://www.google.com/' 'http://localhost:8080/' --output /dev/null
+
+Proxy Logs::
+
+  $ ./gopro
+  {"httpver":"HTTP/1.1","level":"debug","method":"GET","msg":"Received request from User Agent","peer":"ua","pkg":"main","reqid":1517716333,"scheme":"https","time":"2018-02-04T09:22:13+05:30","url":"https://www.google.com/"}
+  {"httpver":"HTTP/1.1","level":"debug","method":"GET","msg":"Sending request to Origin Server","peer":"origin","pkg":"main","reqid":1517716333,"scheme":"https","time":"2018-02-04T09:22:13+05:30","url":"https://www.google.com/"}
+  {"httpver":"HTTP/2.0","level":"debug","msg":"Received response from Origin Server","peer":"origin","pkg":"main","reqid":1517716333,"scheme":"https","statuscode":200,"time":"2018-02-04T09:22:14+05:30","url":"https://www.google.co.in/?gfe_rd=cr\u0026dcr=0\u0026ei=boN2WqCqEovm8weS4ZqgDw"}
 
