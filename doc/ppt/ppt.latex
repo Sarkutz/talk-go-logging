@@ -25,10 +25,10 @@
 }
 
 
-\title{Logging in Go}
-\subtitle{An Introduction to Structured Logging}
+\title{Structured Logging in Go}
+% \subtitle{An Introduction to Structured Logging}
 \author{Ashim Ghosh}
-\date[]{February 2, 2018}
+\date[]{February 10, 2018}
 
 \begin{document}
 
@@ -36,6 +36,16 @@
 
 \begin{frame}[plain]
   \titlepage
+\end{frame}
+
+%% FRAME: About me
+
+\begin{frame}{About me}
+  \begin{itemize}
+    \item Develop performant web services using C at PubMatic
+    \item Amature Go developer
+    \item Currently, developing my first, production-grade web service using Go
+  \end{itemize}
 \end{frame}
 
 %% FRAME: TOC
@@ -57,14 +67,14 @@
     \item Proxy request to the \structure{\emph{origin server}}
     \item Proxy response from the origin server to the user agent
   \end{itemize}
-  \pause
-  \bigskip
+  % \pause
+  % \bigskip
 
-  Why this scenario?
-  \begin{itemize}
-    \item A good model for the Ad Server
-    \item Easy --- won't get in the way
-  \end{itemize}
+  % Why this scenario?
+  % \begin{itemize}
+  %   \item A good model for the Ad Server
+  %   \item Easy --- won't get in the way
+  % \end{itemize}
 \end{frame}
 
 
@@ -91,7 +101,7 @@
       \ovalbox{Simplicity}
     \item \structure{Demerits}: 
       \ovalbox{Level of abstraction}
-      \ovalbox{Easy of parsing}
+      \ovalbox{Ease of parsing}
       \ovalbox{Log design}
       \ovalbox{Avoid missing log details}
       \ovalbox{Production readiness}
@@ -124,7 +134,7 @@
       \ovalbox{Production readiness}
     \item \structure{Demerits}: 
       \ovalbox{Level of abstraction} (effectively only two levels)
-      \ovalbox{Easy of parsing}
+      \ovalbox{Ease of parsing}
       \ovalbox{Log design}
     \item \ovalbox{Avoid missing log details} (support for adding some details
       to each log)
@@ -145,9 +155,10 @@
       (after due consideration)
     \item \structure{Common Functions}: 
       \begin{itemize}
-        \item \verb|{Debug, Info, Warn, Error, Fatal, Error} X {, f, ln}|
+        \item \verb|{Debug, Info, Warn, Error, Fatal, Panic} X {, f, ln}|
         \item \verb|func SetLevel(int)|
       \end{itemize}
+    \item Too many log levels considered bad?
 
     \item glog package
     \item \structure{Documentation}: [Online.]
@@ -156,6 +167,7 @@
       \href{https://github.com/golang/glog}{github.com/golang/glog}
   \end{itemize}
 
+  \pause
   \bigskip
 
   \begin{itemize}
@@ -163,7 +175,7 @@
       \ovalbox{Level of abstraction}
       \ovalbox{Production readiness}
     \item \structure{Demerits}: 
-      \ovalbox{Easy of parsing}
+      \ovalbox{Ease of parsing}
       \ovalbox{Log design}
       \ovalbox{Avoid missing log details}
       \ovalbox{Simplicity}
@@ -179,18 +191,124 @@
 
 \begin{frame}{Structured Logging}
   \begin{center}
-    \textbf{structure} {\textit{\small(noun)}}: a complex entity constructed of many parts.
+    \structure{\textbf{structure}} {\textit{\small(noun)}}: a complex entity constructed of many parts.
   \end{center}
+  \bigskip
+
   \begin{itemize}
     \item Thinking of logs as a structure; designing this structure and it's
       parts
-    \item An example
+    \item Machine readable structure.
   \end{itemize}
 \end{frame}
 
-%% FRAME: Default Logger: Overview
+%% FRAME: Structured Logging: Example
 
-\begin{frame}{Logrus package: Overview}
+\begin{frame}{Example: Unstructured Log Line}
+  \begin{block}{Sample log}
+    \texttt{\scriptsize req = \&\{Method:GET URL:/ Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[User-Agent:[curl/7.47.0] Accept:[*/*] X-Purl:[https://www.youtube.com/]] Body:\{\} GetBody:$\langle$nil$\rangle$ ContentLength:0 TransferEncoding:[] Close:false Host:localhost:8080 Form:map[] PostForm:map[] MultipartForm:$\langle$nil$\rangle$ Trailer:map[] RemoteAddr:127.0.0.1:46312 RequestURI:/ TLS:$\langle$nil$\rangle$ Cancel:$\langle$nil$\rangle$ Response:$\langle$nil$\rangle$ ctx:0xc42005e340\}}
+  \end{block}
+  \medskip
+
+  \structure{Considerations-}
+  \begin{itemize}
+    \item Not machine readable?
+    \item Not human readable?
+    \item Who consumes logs?
+    \item Too much detail?  Yet, missing fields?
+    \item \structure{Destroying the structure of a structure}
+  \end{itemize}
+\end{frame}
+
+%% FRAME: Design Structured Log Line
+
+\begin{frame}[fragile]{Design Structured Log Line: Universal fields}
+  \begin{itemize}
+    \item Some field make sense for all applications
+  \end{itemize}
+  \bigskip
+
+  \begin{block}{Structured Log Line}
+    \footnotesize
+    \begin{verbatim}
+    {
+      "level": "debug",
+      "pkg": "main",
+      "reqid": 1518232390,
+      "time": "2018-02-10T08:43:10+05:30",
+      "msg": "Received request from User Agent"
+    }
+    \end{verbatim}
+  \end{block}
+\end{frame}
+
+%% FRAME: Design Structured Log Line: Global Fields
+
+\begin{frame}[fragile]{Design Structured Log Line: Global Fields}
+  \begin{itemize}
+    \item Application-specific fields
+    \item Should be added to each log line
+  \end{itemize}
+  \bigskip
+
+  \begin{block}{Structured Log Line}
+    \footnotesize
+    \begin{verbatim}
+    {
+      [...]
+
+      "peer": "ua",
+      "method": "GET",
+      "url": "https://www.youtube.com/",
+    }
+    \end{verbatim}
+  \end{block}
+\end{frame}
+
+%% FRAME: Design Structured Log Line: Analysis-specific Fields
+
+\begin{frame}[fragile]{Design Structured Log Line: Analysis-specific Fields}
+  \begin{itemize}
+    \item Field required to answer questions specific to an analysis
+    \item Example Analysis: Does the origin server upgrade to HTTP/2 when we
+      make a HTTPS request?
+    \item<2> Challenge: How to ensure that we include sufficient fields to handle
+      unforeseen, future fields?
+  \end{itemize}
+
+  \begin{block}{Structured Log Line}
+    \footnotesize
+    \begin{verbatim}
+    {
+      [...]
+
+      "httpver": "HTTP/1.1",
+      "scheme": "https"
+    }
+    \end{verbatim}
+  \end{block}
+\end{frame}
+
+% FRAME: Example Structured versus Unstructured Log Line
+
+\begin{frame}{Example Structured versus Unstructured Log Line}
+  \begin{block}{Unstructured Log Line}
+    \texttt{\scriptsize req = \&\{Method:GET URL:/ Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[User-Agent:[curl/7.47.0] Accept:[*/*] X-Purl:[https://www.youtube.com/]] Body:\{\} GetBody:$\langle$nil$\rangle$ ContentLength:0 TransferEncoding:[] Close:false Host:localhost:8080 Form:map[] PostForm:map[] MultipartForm:$\langle$nil$\rangle$ Trailer:map[] RemoteAddr:127.0.0.1:46312 RequestURI:/ TLS:$\langle$nil$\rangle$ Cancel:$\langle$nil$\rangle$ Response:$\langle$nil$\rangle$ ctx:0xc42005e340\}}
+  \end{block}
+  \bigskip
+
+  \begin{block}{Structured Log Line}
+    \texttt{\footnotesize \{"httpver":"HTTP/1.1", "level":"debug", "method":"GET", "msg":"Received request from User Agent", "peer":"ua", "pkg":"main", "reqid":1518232390, "scheme":"https", "time":"2018-02-10T08:43:10+05:30", "url":"https://www.youtube.com/"\}}
+  \end{block}
+\end{frame}
+
+%% SECTION: Logrus Package
+
+\section{Logrus Package}
+
+%% FRAME: Logrus: Overview
+
+\begin{frame}{Logrus: Overview}
   \begin{itemize}
     \item \structure{Approach}: Design ``parts/fields'' of each log; use Logrus package
     \item \structure{Documentation}: [Online.]
@@ -202,9 +320,9 @@
   \end{itemize}
 \end{frame}
 
-%% FRAME: Code and Demo
+%% FRAME: Logrus: Code and Demo
 
-\begin{frame}{Code and Demo}
+\begin{frame}{Logrus: Code and Demo}
   Questions that logs can answer-
   \begin{itemize}[<+->]
     \item Are there any errors?
@@ -212,23 +330,23 @@
     \item What HTTP status codes are returned by the origin server?
       \structure{\{doable\}}
     \item Does origin server upgrade to HTTP/2 for HTTPS?
-      \structure{\{feature specific\}}
+      \structure{\{analysis specific\}}
     \item Can I replay what happened in a request?
       \structure{\{deep analysis\}}
-    \item Can I manage stats and other Time Series Data?
+    \item Can I manage Time Series Data?
       \structure{\{deep analysis\}}
     \item Can I find out the most frequent requests from user agent?
-      \structure{\{business queries\}}
+      \structure{\{business analysis\}}.
   \end{itemize}
 \end{frame}
 
-%% FRAME: Default Logger: Overview
+%% FRAME: Logrus: Merits and Demerits
 
-\begin{frame}{Logrus package: Merits and Demerits}
+\begin{frame}{Logrus: Merits and Demerits}
   \begin{itemize}
     \item \structure{Merits}:
       \ovalbox{Level of abstraction}
-      \ovalbox{Easy of parsing}
+      \ovalbox{Ease of parsing}
       \ovalbox{Good log design}
       \ovalbox{Avoid missing log details}
       \ovalbox{Production readiness}
@@ -239,23 +357,7 @@
 \end{frame}
 
 
-%% SECTION: Ad Server
-
-\section{Ad Server}
-
-%% FRAME: Ad Server
-
-\begin{frame}{Ad Server}
-  \begin{center}
-    \textit{This slide is intentionally left blank}
-    \pause
-    \bigskip
-    \ldots \\ for you and me to fill
-  \end{center}
-\end{frame}
-
-
-%% FRAME: Closing
+%% FRAME: Conclusion
 
 \begin{frame}{Conclusion}
   \begin{itemize}
