@@ -1,0 +1,10 @@
+curl --silent --include -H 'X-purl: https://www.youtube.com/' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://www.google.co.in/' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://inside.pubmatic.com:9443/jira/browse/DCSUP-80510' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://inside.pubmatic.com:9443/jira/browse/DCSUP-80370' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: http://localhost/proj/' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://inside.pubmatic.com:9443/jira/browse/ASD-4535' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://pubmatic.okta.com/app/UserHome' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://inside.pubmatic.com:9443/jira/secure/Dashboard.jspa' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://git.pubmatic.com/PubMatic/adserver/commits/FIX-ASD-4535' 'http://localhost:8080/' -o /dev/null
+curl --silent --include -H 'X-purl: https://git.pubmatic.com/PubMatic/adserver' 'http://localhost:8080/' -o /dev/null
